@@ -11,6 +11,10 @@
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
         
         body {
@@ -23,6 +27,7 @@
             align-items: center;
             justify-content: flex-start;
             overflow-x: hidden;
+            touch-action: manipulation; /* Для лучшей работы с касаниями */
         }
         
         .container {
@@ -107,6 +112,8 @@
             width: 200px;
             height: 200px;
             margin: 0 auto 25px;
+            -webkit-tap-highlight-color: transparent;
+            cursor: pointer;
         }
         
         @media (max-width: 480px) {
@@ -129,6 +136,7 @@
             height: 100%;
             cursor: pointer;
             position: relative;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .coin {
@@ -142,6 +150,7 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
         }
         
         /* Красивая золотая монета с эффектом свечения */
@@ -182,11 +191,12 @@
             pointer-events: none;
         }
         
-        .clickable-item:active .coin {
+        /* Анимации для активного состояния (для мобильных и ПК) */
+        .coin.active {
             transform: scale(0.92);
         }
         
-        .clickable-item:active .coin-effect {
+        .coin-effect.active {
             animation: coinClickEffect 0.3s ease-out;
         }
         
@@ -207,6 +217,7 @@
             position: relative;
             overflow: hidden;
             transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
         }
         
         .hat:before {
@@ -246,11 +257,12 @@
             pointer-events: none;
         }
         
-        .clickable-item:active .hat {
+        /* Анимации для активного состояния шляпы */
+        .hat.active {
             transform: scale(0.92);
         }
         
-        .clickable-item:active .hat-effect {
+        .hat-effect.active {
             animation: hatClickEffect 0.3s ease-out;
         }
         
@@ -310,6 +322,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             flex: 1;
             max-width: 300px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         
         @media (min-width: 768px) {
@@ -574,7 +588,7 @@
             <div id="multiplier">Множитель: x1</div>
         </div>
         
-        <div class="clickable-container">
+        <div class="clickable-container" id="clickable-container">
             <div class="clickable-item" id="clickable-item">
                 <div class="coin" id="coin"></div>
                 <div class="coin-effect" id="coin-effect"></div>
@@ -650,11 +664,11 @@
         const coinCountEl = document.getElementById('coin-count');
         const multiplierEl = document.getElementById('multiplier');
         const clickableItemEl = document.getElementById('clickable-item');
+        const clickableContainerEl = document.getElementById('clickable-container');
         const coinEl = document.getElementById('coin');
         const coinEffectEl = document.getElementById('coin-effect');
         const hatEl = document.getElementById('hat');
         const hatEffectEl = document.getElementById('hat-effect');
-        const clickableContainerEl = document.querySelector('.clickable-container');
         const multiplyBtn = document.getElementById('multiply-btn');
         const achievementsBtn = document.getElementById('achievements-btn');
         const saveBtn = document.getElementById('save-btn');
@@ -669,14 +683,18 @@
         const nextMultiplierEl = document.getElementById('next-multiplier');
         const achievementsListEl = document.getElementById('achievements-list');
         
+        // Флаг для предотвращения множественных кликов
+        let isProcessingClick = false;
+        
         // Инициализация игры
         function initGame() {
             loadGame();
             updateUI();
             updateAchievementsList();
             
-            // Обработчики событий
-            clickableItemEl.addEventListener('click', handleClick);
+            // Обработчики событий - универсальные для ПК и мобильных
+            setupClickHandlers();
+            
             multiplyBtn.addEventListener('click', upgradeMultiplier);
             achievementsBtn.addEventListener('click', showAchievements);
             saveBtn.addEventListener('click', saveGame);
@@ -687,15 +705,70 @@
             
             // Обновляем текст кнопки улучшения множителя
             updateMultiplyButton();
-            
-            // Для мобильных устройств добавляем обработчик касания
-            clickableItemEl.addEventListener('touchstart', function(e) {
-                e.preventDefault(); // Предотвращаем выделение текста
-            }, { passive: false });
         }
         
-        // Обработка клика по монете/шляпе
+        // Настройка обработчиков кликов для ПК и мобильных
+        function setupClickHandlers() {
+            // Удаляем старые обработчики
+            clickableContainerEl.removeEventListener('click', handleClick);
+            clickableContainerEl.removeEventListener('touchstart', handleTouch);
+            
+            // Для ПК
+            clickableContainerEl.addEventListener('click', handleClick);
+            
+            // Для мобильных устройств
+            clickableContainerEl.addEventListener('touchstart', handleTouch, { passive: false });
+            
+            // Предотвращаем выделение текста при долгом нажатии на мобильных
+            clickableContainerEl.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                return false;
+            });
+        }
+        
+        // Обработка клика мышью
         function handleClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            processClick(e);
+        }
+        
+        // Обработка касания на мобильных устройствах
+        function handleTouch(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                // Создаем искусственное событие клика с координатами касания
+                const clickEvent = new MouseEvent('click', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY,
+                    bubbles: true,
+                    cancelable: true
+                });
+                
+                // Используем координаты касания для анимации
+                processClick(clickEvent);
+            }
+        }
+        
+        // Основная функция обработки клика
+        function processClick(e) {
+            // Предотвращаем множественные клики
+            if (isProcessingClick) return;
+            isProcessingClick = true;
+            
+            // Визуальная обратная связь
+            if (stage === 1) {
+                coinEl.classList.add('active');
+                coinEffectEl.classList.add('active');
+            } else {
+                hatEl.classList.add('active');
+                hatEffectEl.classList.add('active');
+            }
+            
+            // Игровая логика
             clicks++;
             const coinsEarned = stage === 1 ? multiplier : multiplier * 5;
             coins += coinsEarned;
@@ -704,23 +777,29 @@
             // Создаем анимацию числа
             createClickAnimation(e, coinsEarned);
             
-            // Запускаем эффект клика
-            if (stage === 1) {
-                coinEffectEl.style.animation = 'none';
-                setTimeout(() => {
-                    coinEffectEl.style.animation = 'coinClickEffect 0.3s ease-out';
-                }, 10);
-            } else {
-                hatEffectEl.style.animation = 'none';
-                setTimeout(() => {
-                    hatEffectEl.style.animation = 'hatClickEffect 0.3s ease-out';
-                }, 10);
-            }
-            
             // Проверка достижений по количеству монет
             checkCoinAchievements();
             
             updateUI();
+            
+            // Сбрасываем состояние анимации
+            setTimeout(() => {
+                if (stage === 1) {
+                    coinEl.classList.remove('active');
+                } else {
+                    hatEl.classList.remove('active');
+                }
+                isProcessingClick = false;
+            }, 100);
+            
+            // Сбрасываем эффект для повторного использования
+            setTimeout(() => {
+                if (stage === 1) {
+                    coinEffectEl.classList.remove('active');
+                } else {
+                    hatEffectEl.classList.remove('active');
+                }
+            }, 300);
         }
         
         // Создание анимации числа при клике
@@ -729,19 +808,26 @@
             clickAnim.className = 'click-animation';
             clickAnim.textContent = `+${amount}`;
             
-            // Позиционируем анимацию относительно места клика
+            // Получаем координаты контейнера
             const rect = clickableContainerEl.getBoundingClientRect();
             let x, y;
             
-            if (e.type === 'touchstart' || e.type === 'touchmove') {
+            // Определяем координаты для ПК или мобильного
+            if (e.type === 'touchstart' || (e.touches && e.touches.length > 0)) {
                 // Для касаний на мобильных устройствах
-                const touch = e.touches[0] || e.changedTouches[0];
+                const touch = e.touches[0];
                 x = touch.clientX - rect.left;
                 y = touch.clientY - rect.top;
             } else {
                 // Для кликов мышью
                 x = e.clientX - rect.left;
                 y = e.clientY - rect.top;
+            }
+            
+            // Устанавливаем позицию в центре, если координаты не определены
+            if (x === undefined || y === undefined) {
+                x = rect.width / 2;
+                y = rect.height / 2;
             }
             
             // Устанавливаем позицию
@@ -753,7 +839,9 @@
             
             // Удаляем анимацию после завершения
             setTimeout(() => {
-                clickAnim.remove();
+                if (clickAnim.parentNode) {
+                    clickAnim.remove();
+                }
             }, 1000);
         }
         
@@ -986,15 +1074,30 @@
         // Запуск игры при загрузке страницы
         window.addEventListener('DOMContentLoaded', initGame);
         
-        // Для предотвращения масштабирования на мобильных устройствах при двойном тапе
+        // Предотвращаем масштабирование на мобильных устройствах при двойном тапе
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+        
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(event) {
-            const now = (new Date()).getTime();
+            const now = Date.now();
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
             }
             lastTouchEnd = now;
         }, false);
+        
+        // Предотвращаем меню браузера при долгом нажатии
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.closest('#clickable-container') || 
+                e.target.closest('#coin') || 
+                e.target.closest('#hat')) {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>
