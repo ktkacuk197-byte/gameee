@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Монетный кликер</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        h1 {
+            margin: 10px 0 15px;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            font-size: 2.2rem;
+        }
+        
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+                margin: 20px 0;
+            }
+        }
+        
+        .game-stage {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            border: 2px solid #FFD700;
+            display: inline-block;
+        }
+        
+        @media (min-width: 768px) {
+            .game-stage {
+                padding: 15px;
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+            }
+        }
+        
+        .coin-display {
+            margin: 20px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .coin-display {
+                margin: 30px 0;
+            }
+        }
+        
+        #coin-count {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        @media (min-width: 768px) {
+            #coin-count {
+                font-size: 3rem;
+                margin-bottom: 10px;
+            }
+        }
+        
+        #multiplier {
+            font-size: 1.3rem;
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            #multiplier {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+        }
+        
+        .clickable-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 25px;
+        }
+        
+        @media (max-width: 480px) {
+            .clickable-container {
+                width: 180px;
+                height: 180px;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .clickable-container {
+                width: 220px;
+                height: 220px;
+                margin-bottom: 30px;
+            }
+        }
+        
+        .clickable-item {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .coin {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s;
+        }
+        
+        /* Красивая золотая монета с эффектом свечения */
+        .coin:before {
+            content: '';
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            right: 5%;
+            bottom: 5%;
+            background: radial-gradient(circle at 30% 30%, #FFD700 0%, #daa520 30%, #b8860b 70%, #8B7500 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 0 0 20px rgba(255, 255, 255, 0.3),
+                inset -5px -5px 15px rgba(0, 0, 0, 0.5),
+                0 0 25px rgba(255, 215, 0, 0.7);
+            z-index: 1;
+        }
+        
+        .coin:after {
+            content: '🪙';
+            font-size: 4rem;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+        }
+        
+        .coin-effect {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            right: 5%;
+            bottom: 5%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.4) 0%, transparent 70%);
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .clickable-item:active .coin {
+            transform: scale(0.92);
+        }
+        
+        .clickable-item:active .coin-effect {
+            animation: coinClickEffect 0.3s ease-out;
+        }
+        
+        @keyframes coinClickEffect {
+            0% { opacity: 1; transform: scale(0.8); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+        
+        /* Черная шляпа */
+        .hat {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s;
+        }
+        
+        .hat:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, #222 0%, #111 30%, #000 70%, #000 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset 0 0 20px rgba(100, 100, 100, 0.3),
+                inset -5px -5px 15px rgba(0, 0, 0, 0.8),
+                0 0 25px rgba(0, 0, 0, 0.9);
+            z-index: 1;
+        }
+        
+        .hat:after {
+            content: '🎩';
+            font-size: 5rem;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.8));
+        }
+        
+        .hat-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 50% 50%, rgba(100, 100, 100, 0.4) 0%, transparent 70%);
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .clickable-item:active .hat {
+            transform: scale(0.92);
+        }
+        
+        .clickable-item:active .hat-effect {
+            animation: hatClickEffect 0.3s ease-out;
+        }
+        
+        @keyframes hatClickEffect {
+            0% { opacity: 1; transform: scale(0.8); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+        
+        /* Анимация появления числа при клике */
+        .click-animation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            animation: floatUp 1s ease-out forwards;
+        }
+        
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -120%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -180%) scale(1.5); }
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .controls {
+                gap: 15px;
+                margin: 20px 0;
+            }
+        }
+        
+        button {
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            min-width: 160px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            flex: 1;
+            max-width: 300px;
+        }
+        
+        @media (min-width: 768px) {
+            button {
+                min-width: 180px;
+                padding: 12px 24px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to bottom, #66BB6A, #388E3C);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:disabled {
+            background: linear-gradient(to bottom, #757575, #424242);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .reset-btn {
+            background: linear-gradient(to bottom, #f44336, #c62828);
+        }
+        
+        .reset-btn:hover {
+            background: linear-gradient(to bottom, #ef5350, #d32f2f);
+        }
+        
+        .save-btn {
+            background: linear-gradient(to bottom, #2196F3, #1565C0);
+        }
+        
+        .save-btn:hover {
+            background: linear-gradient(to bottom, #42A5F5, #1976D2);
+        }
+        
+        .stats, .achievements {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+            width: 100%;
+        }
+        
+        @media (min-width: 768px) {
+            .stats, .achievements {
+                padding: 20px;
+                margin: 20px 0;
+                border-radius: 15px;
+            }
+        }
+        
+        h2 {
+            color: #FFD700;
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            h2 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+        }
+        
+        .stats-content, .achievements-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        
+        @media (max-width: 480px) {
+            .stats-content, .achievements-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .stat-item, .achievement-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        @media (min-width: 768px) {
+            .stat-item, .achievement-item {
+                padding: 15px;
+                border-radius: 10px;
+            }
+        }
+        
+        .achievement-item {
+            border-left-color: #FFD700;
+        }
+        
+        .achievement-item.locked {
+            border-left-color: #757575;
+            opacity: 0.7;
+        }
+        
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #FFD700;
+            font-size: 1rem;
+        }
+        
+        .achievement-locked {
+            color: #aaa;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+        
+        .achievement-unlocked {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+        }
+        
+        @media (min-width: 768px) {
+            .modal-content {
+                padding: 30px;
+                border-radius: 20px;
+            }
+        }
+        
+        .modal h2 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        @media (min-width: 768px) {
+            .modal h2 {
+                font-size: 2.2rem;
+                margin-bottom: 20px;
+            }
+        }
+        
+        .modal p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        @media (min-width: 768px) {
+            .modal p {
+                font-size: 1.2rem;
+                margin-bottom: 25px;
+            }
+        }
+        
+        .close-modal {
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+            max-width: 200px;
+        }
+        
+        @media (min-width: 768px) {
+            .close-modal {
+                font-size: 1.1rem;
+            }
+        }
+        
+        /* Уведомление о сохранении */
+        .save-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(33, 150, 243, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 101;
+            transform: translateX(150%);
+            transition: transform 0.4s ease-out;
+            max-width: 300px;
+        }
+        
+        .save-notification.show {
+            transform: translateX(0);
+        }
+        
+        /* Для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .clickable-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .coin:after {
+                font-size: 3rem;
+            }
+            
+            .hat:after {
+                font-size: 4rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            button {
+                min-width: 140px;
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Монетный кликер</h1>
+        
+        <div class="game-stage" id="game-stage">Этап 1: Золотая монета</div>
+        
+        <div class="coin-display">
+            <div id="coin-count">0</div>
+            <div id="multiplier">Множитель: x1</div>
+        </div>
+        
+        <div class="clickable-container">
+            <div class="clickable-item" id="clickable-item">
+                <div class="coin" id="coin"></div>
+                <div class="coin-effect" id="coin-effect"></div>
+                <div class="hat" id="hat" style="display: none;"></div>
+                <div class="hat-effect" id="hat-effect" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="multiply-btn" disabled>Улучшить множитель (50 монет)</button>
+            <button id="achievements-btn">Достижения</button>
+            <button id="save-btn" class="save-btn">Сохранить</button>
+            <button id="reset-btn" class="reset-btn">Сбросить</button>
+        </div>
+        
+        <div class="stats">
+            <h2>Статистика</h2>
+            <div class="stats-content">
+                <div class="stat-item">
+                    <div>Всего кликов: <span id="total-clicks">0</span></div>
+                </div>
+                <div class="stat-item">
+                    <div>Монет заработано: <span id="total-coins">0</span></div>
+                </div>
+                <div class="stat-item">
+                    <div>Текущий множитель: <span id="current-multiplier">1</span></div>
+                </div>
+                <div class="stat-item">
+                    <div>Следующий множитель: <span id="next-multiplier">2</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="achievements">
+            <h2>Достижения</h2>
+            <div class="achievements-content" id="achievements-list">
+                <!-- Достижения будут загружены через JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="secret-modal">
+        <div class="modal-content">
+            <h2>Секретная очивка открыта!</h2>
+            <p>🎉 Поздравляем! Вы достигли максимального множителя x350 и открыли секретный этап игры!</p>
+            <p>Теперь ваша монета превратилась в <strong>Черную шляпу</strong>!</p>
+            <p>Вы получили достижение "Черная шляпа" и начальный множитель x500!</p>
+            <p>В новом этапе множители будут улучшаться каждые 5000 монет!</p>
+            <button class="close-modal" id="close-modal">Продолжить игру</button>
+        </div>
+    </div>
+    
+    <div class="save-notification" id="save-notification">Прогресс сохранен!</div>
+
+    <script>
+        // Игровые переменные
+        let coins = 0;
+        let totalCoins = 0;
+        let clicks = 0;
+        let multiplier = 1;
+        let nextMultiplierCost = 50;
+        let stage = 1; // 1 - золотая монета, 2 - черная шляпа
+        let maxMultiplierStage1 = 350; // Скрыто от пользователя
+        let achievements = {
+            coin50: false,
+            coin500: false,
+            coin1000: false,
+            blackHat: false,
+            multiplier500: false
+        };
+        
+        // Элементы DOM
+        const coinCountEl = document.getElementById('coin-count');
+        const multiplierEl = document.getElementById('multiplier');
+        const clickableItemEl = document.getElementById('clickable-item');
+        const coinEl = document.getElementById('coin');
+        const coinEffectEl = document.getElementById('coin-effect');
+        const hatEl = document.getElementById('hat');
+        const hatEffectEl = document.getElementById('hat-effect');
+        const clickableContainerEl = document.querySelector('.clickable-container');
+        const multiplyBtn = document.getElementById('multiply-btn');
+        const achievementsBtn = document.getElementById('achievements-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const gameStageEl = document.getElementById('game-stage');
+        const secretModal = document.getElementById('secret-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const saveNotification = document.getElementById('save-notification');
+        const totalClicksEl = document.getElementById('total-clicks');
+        const totalCoinsEl = document.getElementById('total-coins');
+        const currentMultiplierEl = document.getElementById('current-multiplier');
+        const nextMultiplierEl = document.getElementById('next-multiplier');
+        const achievementsListEl = document.getElementById('achievements-list');
+        
+        // Инициализация игры
+        function initGame() {
+            loadGame();
+            updateUI();
+            updateAchievementsList();
+            
+            // Обработчики событий
+            clickableItemEl.addEventListener('click', handleClick);
+            multiplyBtn.addEventListener('click', upgradeMultiplier);
+            achievementsBtn.addEventListener('click', showAchievements);
+            saveBtn.addEventListener('click', saveGame);
+            resetBtn.addEventListener('click', resetGame);
+            closeModalBtn.addEventListener('click', () => {
+                secretModal.style.display = 'none';
+            });
+            
+            // Обновляем текст кнопки улучшения множителя
+            updateMultiplyButton();
+            
+            // Для мобильных устройств добавляем обработчик касания
+            clickableItemEl.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // Предотвращаем выделение текста
+            }, { passive: false });
+        }
+        
+        // Обработка клика по монете/шляпе
+        function handleClick(e) {
+            clicks++;
+            const coinsEarned = stage === 1 ? multiplier : multiplier * 5;
+            coins += coinsEarned;
+            totalCoins += coinsEarned;
+            
+            // Создаем анимацию числа
+            createClickAnimation(e, coinsEarned);
+            
+            // Запускаем эффект клика
+            if (stage === 1) {
+                coinEffectEl.style.animation = 'none';
+                setTimeout(() => {
+                    coinEffectEl.style.animation = 'coinClickEffect 0.3s ease-out';
+                }, 10);
+            } else {
+                hatEffectEl.style.animation = 'none';
+                setTimeout(() => {
+                    hatEffectEl.style.animation = 'hatClickEffect 0.3s ease-out';
+                }, 10);
+            }
+            
+            // Проверка достижений по количеству монет
+            checkCoinAchievements();
+            
+            updateUI();
+        }
+        
+        // Создание анимации числа при клике
+        function createClickAnimation(e, amount) {
+            const clickAnim = document.createElement('div');
+            clickAnim.className = 'click-animation';
+            clickAnim.textContent = `+${amount}`;
+            
+            // Позиционируем анимацию относительно места клика
+            const rect = clickableContainerEl.getBoundingClientRect();
+            let x, y;
+            
+            if (e.type === 'touchstart' || e.type === 'touchmove') {
+                // Для касаний на мобильных устройствах
+                const touch = e.touches[0] || e.changedTouches[0];
+                x = touch.clientX - rect.left;
+                y = touch.clientY - rect.top;
+            } else {
+                // Для кликов мышью
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            }
+            
+            // Устанавливаем позицию
+            clickAnim.style.left = `${x}px`;
+            clickAnim.style.top = `${y}px`;
+            
+            // Добавляем в контейнер
+            clickableContainerEl.appendChild(clickAnim);
+            
+            // Удаляем анимацию после завершения
+            setTimeout(() => {
+                clickAnim.remove();
+            }, 1000);
+        }
+        
+        // Улучшение множителя
+        function upgradeMultiplier() {
+            if (coins >= nextMultiplierCost) {
+                coins = 0;
+                
+                if (stage === 1) {
+                    multiplier++;
+                    
+                    // Проверка на достижение максимального множителя в первом этапе
+                    if (multiplier >= maxMultiplierStage1) {
+                        activateSecretStage();
+                        return;
+                    }
+                    
+                    nextMultiplierCost = Math.floor(nextMultiplierCost * 1.5);
+                } else {
+                    multiplier += 100;
+                    nextMultiplierCost += 5000;
+                    
+                    if (multiplier >= 500 && !achievements.multiplier500) {
+                        achievements.multiplier500 = true;
+                        saveGame();
+                    }
+                }
+                
+                updateUI();
+                updateMultiplyButton();
+            }
+        }
+        
+        // Активация секретного этапа
+        function activateSecretStage() {
+            stage = 2;
+            coins = 0;
+            multiplier = 500;
+            nextMultiplierCost = 5000;
+            achievements.blackHat = true;
+            
+            // Показываем модальное окно
+            secretModal.style.display = 'flex';
+            
+            // Переключаем отображение с монеты на шляпу
+            coinEl.style.display = 'none';
+            coinEffectEl.style.display = 'none';
+            hatEl.style.display = 'block';
+            hatEffectEl.style.display = 'block';
+            gameStageEl.textContent = 'Этап 2: Черная шляпа';
+            
+            saveGame();
+            updateUI();
+            updateMultiplyButton();
+        }
+        
+        // Проверка достижений по количеству монет
+        function checkCoinAchievements() {
+            if (totalCoins >= 50 && !achievements.coin50) {
+                achievements.coin50 = true;
+                saveGame();
+            }
+            
+            if (totalCoins >= 500 && !achievements.coin500) {
+                achievements.coin500 = true;
+                saveGame();
+            }
+            
+            if (totalCoins >= 1000 && !achievements.coin1000) {
+                achievements.coin1000 = true;
+                saveGame();
+            }
+        }
+        
+        // Обновление интерфейса
+        function updateUI() {
+            coinCountEl.textContent = coins.toLocaleString();
+            multiplierEl.textContent = `Множитель: x${multiplier}`;
+            totalClicksEl.textContent = clicks.toLocaleString();
+            totalCoinsEl.textContent = totalCoins.toLocaleString();
+            currentMultiplierEl.textContent = `x${multiplier}`;
+            
+            if (stage === 1) {
+                nextMultiplierEl.textContent = `x${multiplier + 1}`;
+            } else {
+                nextMultiplierEl.textContent = `x${multiplier + 100}`;
+            }
+            
+            updateMultiplyButton();
+            updateAchievementsList();
+        }
+        
+        // Обновление кнопки улучшения множителя
+        function updateMultiplyButton() {
+            if (stage === 1) {
+                multiplyBtn.textContent = `Улучшить до x${multiplier + 1} (${nextMultiplierCost} монет)`;
+                multiplyBtn.disabled = coins < nextMultiplierCost;
+            } else {
+                multiplyBtn.textContent = `Улучшить до x${multiplier + 100} (${nextMultiplierCost} монет)`;
+                multiplyBtn.disabled = coins < nextMultiplierCost;
+            }
+        }
+        
+        // Показать достижения
+        function showAchievements() {
+            document.querySelector('.achievements').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        
+        // Обновление списка достижений
+        function updateAchievementsList() {
+            const achievementsData = [
+                { id: 'coin50', title: 'Первые 50 монет', description: 'Заработайте 50 монет', condition: totalCoins >= 50, unlocked: achievements.coin50 },
+                { id: 'coin500', title: '500 монет', description: 'Заработайте 500 монет', condition: totalCoins >= 500, unlocked: achievements.coin500 },
+                { id: 'coin1000', title: '1000 монет', description: 'Заработайте 1000 монет', condition: totalCoins >= 1000, unlocked: achievements.coin1000 },
+                { id: 'blackHat', title: 'Черная шляпа', description: 'Откройте секретную очивку', condition: stage === 2, unlocked: achievements.blackHat },
+                { id: 'multiplier500', title: 'Множитель x500', description: 'Достигните множителя x500', condition: multiplier >= 500, unlocked: achievements.multiplier500 }
+            ];
+            
+            achievementsListEl.innerHTML = '';
+            
+            achievementsData.forEach(ach => {
+                const achievementItem = document.createElement('div');
+                achievementItem.className = `achievement-item ${ach.unlocked ? '' : 'locked'}`;
+                
+                achievementItem.innerHTML = `
+                    <div class="achievement-title">${ach.title}</div>
+                    <div>${ach.description}</div>
+                    <div class="${ach.unlocked ? 'achievement-unlocked' : 'achievement-locked'}">
+                        ${ach.unlocked ? '✅ Разблокировано' : '🔒 Заблокировано'}
+                    </div>
+                `;
+                
+                achievementsListEl.appendChild(achievementItem);
+            });
+        }
+        
+        // Сохранение игры
+        function saveGame() {
+            const gameData = {
+                coins,
+                totalCoins,
+                clicks,
+                multiplier,
+                nextMultiplierCost,
+                stage,
+                achievements
+            };
+            
+            localStorage.setItem('coinClickerGame', JSON.stringify(gameData));
+            
+            // Показываем уведомление
+            saveNotification.classList.add('show');
+            
+            setTimeout(() => {
+                saveNotification.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Загрузка игры
+        function loadGame() {
+            const savedData = localStorage.getItem('coinClickerGame');
+            
+            if (savedData) {
+                try {
+                    const gameData = JSON.parse(savedData);
+                    
+                    coins = gameData.coins || 0;
+                    totalCoins = gameData.totalCoins || 0;
+                    clicks = gameData.clicks || 0;
+                    multiplier = gameData.multiplier || 1;
+                    nextMultiplierCost = gameData.nextMultiplierCost || 50;
+                    stage = gameData.stage || 1;
+                    achievements = gameData.achievements || {
+                        coin50: false,
+                        coin500: false,
+                        coin1000: false,
+                        blackHat: false,
+                        multiplier500: false
+                    };
+                    
+                    // Обновляем отображение в зависимости от этапа
+                    if (stage === 2) {
+                        coinEl.style.display = 'none';
+                        coinEffectEl.style.display = 'none';
+                        hatEl.style.display = 'block';
+                        hatEffectEl.style.display = 'block';
+                        gameStageEl.textContent = 'Этап 2: Черная шляпа';
+                    }
+                    
+                } catch (e) {
+                    console.error('Ошибка загрузки игры:', e);
+                }
+            }
+        }
+        
+        // Сброс игры
+        function resetGame() {
+            if (confirm('Вы уверены, что хотите сбросить весь прогресс? Это действие нельзя отменить.')) {
+                coins = 0;
+                totalCoins = 0;
+                clicks = 0;
+                multiplier = 1;
+                nextMultiplierCost = 50;
+                stage = 1;
+                achievements = {
+                    coin50: false,
+                    coin500: false,
+                    coin1000: false,
+                    blackHat: false,
+                    multiplier500: false
+                };
+                
+                // Сбрасываем внешний вид
+                coinEl.style.display = 'block';
+                coinEffectEl.style.display = 'block';
+                hatEl.style.display = 'none';
+                hatEffectEl.style.display = 'none';
+                gameStageEl.textContent = 'Этап 1: Золотая монета';
+                
+                // Очищаем сохранение
+                localStorage.removeItem('coinClickerGame');
+                
+                updateUI();
+            }
+        }
+        
+        // Запуск игры при загрузке страницы
+        window.addEventListener('DOMContentLoaded', initGame);
+        
+        // Для предотвращения масштабирования на мобильных устройствах при двойном тапе
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
