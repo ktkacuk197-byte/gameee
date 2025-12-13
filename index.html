@@ -35,6 +35,7 @@
             width: 100%;
             margin: 0 auto;
             text-align: center;
+            position: relative;
         }
         
         h1 {
@@ -452,6 +453,37 @@
             100% { box-shadow: 0 0 20px rgba(0, 200, 83, 0.7); }
         }
         
+        /* Кнопка друзей в виде кружочка */
+        .friends-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, #2196F3, #1976D2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .friends-btn:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 12px rgba(33, 150, 243, 0.4);
+            background: linear-gradient(to bottom, #42A5F5, #1E88E5);
+        }
+        
+        .friends-btn:active {
+            transform: translateY(1px) scale(1);
+        }
+        
         .stats, .achievements {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
@@ -537,8 +569,8 @@
             font-size: 0.9rem;
         }
         
-        /* Модальное окно магазина */
-        .shop-modal {
+        /* Модальные окна */
+        .friends-modal, .shop-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -552,30 +584,182 @@
             padding: 15px;
         }
         
-        .shop-modal-content {
+        .friends-modal-content, .shop-modal-content {
             background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
             padding: 25px;
             border-radius: 15px;
             max-width: 500px;
             width: 100%;
             text-align: center;
-            border: 3px solid #9C27B0;
-            box-shadow: 0 0 40px rgba(156, 39, 176, 0.7);
+            border: 3px solid #2196F3;
+            box-shadow: 0 0 40px rgba(33, 150, 243, 0.7);
             position: relative;
         }
         
+        .shop-modal-content {
+            border: 3px solid #9C27B0;
+            box-shadow: 0 0 40px rgba(156, 39, 176, 0.7);
+        }
+        
         @media (min-width: 768px) {
-            .shop-modal-content {
+            .friends-modal-content, .shop-modal-content {
                 padding: 35px;
                 border-radius: 20px;
             }
         }
         
-        .shop-modal h2 {
+        .friends-modal h2, .shop-modal h2 {
             color: #FFD700;
             margin-bottom: 25px;
             font-size: 2rem;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .friends-section {
+            margin-bottom: 30px;
+        }
+        
+        .friends-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        
+        .friend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid #2196F3;
+        }
+        
+        .friend-code {
+            font-weight: bold;
+            color: #FFD700;
+            letter-spacing: 1px;
+        }
+        
+        .friend-date {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+        
+        .friend-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .friend-btn {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid #2196F3;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .friend-btn:hover {
+            background: rgba(33, 150, 243, 0.4);
+        }
+        
+        .friend-btn.remove {
+            background: rgba(244, 67, 54, 0.2);
+            border-color: #f44336;
+        }
+        
+        .friend-btn.remove:hover {
+            background: rgba(244, 67, 54, 0.4);
+        }
+        
+        .code-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .your-code {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px dashed #4CAF50;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: linear-gradient(to bottom, #66BB6A, #388E3C);
+            transform: translateY(-2px);
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .code-input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #2196F3;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        
+        .code-input::placeholder {
+            color: #aaa;
+        }
+        
+        .add-friend-btn {
+            background: linear-gradient(to bottom, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .add-friend-btn:hover {
+            background: linear-gradient(to bottom, #42A5F5, #1E88E5);
+            transform: translateY(-2px);
+        }
+        
+        .empty-friends {
+            color: #aaa;
+            font-style: italic;
+            padding: 20px;
         }
         
         .shop-items {
@@ -657,7 +841,7 @@
             font-weight: bold;
         }
         
-        .close-shop {
+        .close-friends, .close-shop {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -675,7 +859,7 @@
             transition: all 0.3s;
         }
         
-        .close-shop:hover {
+        .close-friends:hover, .close-shop:hover {
             background: rgba(255, 215, 0, 0.1);
             transform: rotate(90deg);
         }
@@ -757,12 +941,11 @@
             }
         }
         
-        /* Уведомление о сохранении */
-        .save-notification {
+        /* Уведомления */
+        .save-notification, .friend-notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: rgba(33, 150, 243, 0.9);
             color: white;
             padding: 12px 20px;
             border-radius: 8px;
@@ -773,7 +956,19 @@
             max-width: 300px;
         }
         
-        .save-notification.show {
+        .save-notification {
+            background: rgba(33, 150, 243, 0.9);
+        }
+        
+        .friend-notification {
+            background: rgba(76, 175, 80, 0.9);
+        }
+        
+        .friend-notification.error {
+            background: rgba(244, 67, 54, 0.9);
+        }
+        
+        .save-notification.show, .friend-notification.show {
             transform: translateX(0);
         }
         
@@ -823,22 +1018,37 @@
                 font-size: 0.9rem;
             }
             
-            .shop-modal-content {
+            .friends-modal-content, .shop-modal-content {
                 padding: 15px;
             }
             
-            .shop-item {
+            .shop-item, .friend-item {
                 padding: 15px;
             }
             
             .shop-item-title {
                 font-size: 1.2rem;
             }
+            
+            .friends-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                top: 15px;
+                right: 15px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Кнопка друзей в правом верхнем углу -->
+        <button class="friends-btn" id="friends-btn" title="Друзья">👥</button>
+        
         <h1>Монетный кликер</h1>
         
         <div class="game-stage" id="game-stage">Этап 1: Золотая монета</div>
@@ -886,6 +1096,9 @@
                 <div class="stat-item">
                     <div>Куплено бустов: <span id="boost-count">0</span></div>
                 </div>
+                <div class="stat-item">
+                    <div>Друзей: <span id="friends-count">0</span></div>
+                </div>
             </div>
         </div>
         
@@ -893,6 +1106,35 @@
             <h2>Достижения</h2>
             <div class="achievements-content" id="achievements-list">
                 <!-- Достижения будут загружены через JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно друзей -->
+    <div class="friends-modal" id="friends-modal">
+        <div class="friends-modal-content">
+            <button class="close-friends" id="close-friends">&times;</button>
+            <h2>👥 Система друзей</h2>
+            
+            <div class="friends-section">
+                <h3>Ваш код друга:</h3>
+                <div class="your-code" id="friend-code">123456</div>
+                <button class="copy-btn" id="copy-code-btn">📋 Скопировать код</button>
+            </div>
+            
+            <div class="friends-section">
+                <h3>Добавить друга:</h3>
+                <div class="input-group">
+                    <input type="text" class="code-input" id="friend-input" placeholder="Введите код друга (6 цифр)" maxlength="6">
+                    <button class="add-friend-btn" id="add-friend-btn">Добавить</button>
+                </div>
+            </div>
+            
+            <div class="friends-section">
+                <h3>Ваши друзья:</h3>
+                <div class="friends-list" id="friends-list">
+                    <!-- Список друзей будет загружен через JavaScript -->
+                </div>
             </div>
         </div>
     </div>
@@ -938,6 +1180,7 @@
     
     <div class="save-notification" id="save-notification">Прогресс сохранен!</div>
     <div class="purchase-notification" id="purchase-notification">Покупка успешно совершена!</div>
+    <div class="friend-notification" id="friend-notification"></div>
 
     <script>
         // Игровые переменные
@@ -953,7 +1196,10 @@
             coin500: false,
             coin1000: false,
             blackHat: false,
-            multiplier500: false
+            multiplier500: false,
+            boostMaster: false,
+            richPlayer: false,
+            socialPlayer: false
         };
         
         // Переменные для магазина и бустов
@@ -966,6 +1212,10 @@
         let currentBoostCost = 1500; // Начальная стоимость буста
         const BOOST_COST_INCREASE = 500000; // Увеличение цены на 500к после каждой покупки
         
+        // Переменные для системы друзей
+        let friendCode = '';
+        let friends = []; // Массив объектов: {code: '123456', date: '2024-01-01'}
+        
         // Элементы DOM
         const coinCountEl = document.getElementById('coin-count');
         const multiplierEl = document.getElementById('multiplier');
@@ -977,6 +1227,7 @@
         const hatEffectEl = document.getElementById('hat-effect');
         const multiplyBtn = document.getElementById('multiply-btn');
         const shopBtn = document.getElementById('shop-btn');
+        const friendsBtn = document.getElementById('friends-btn');
         const achievementsBtn = document.getElementById('achievements-btn');
         const saveBtn = document.getElementById('save-btn');
         const resetBtn = document.getElementById('reset-btn');
@@ -985,11 +1236,13 @@
         const closeModalBtn = document.getElementById('close-modal');
         const saveNotification = document.getElementById('save-notification');
         const purchaseNotification = document.getElementById('purchase-notification');
+        const friendNotification = document.getElementById('friend-notification');
         const totalClicksEl = document.getElementById('total-clicks');
         const totalCoinsEl = document.getElementById('total-coins');
         const currentMultiplierEl = document.getElementById('current-multiplier');
         const nextMultiplierEl = document.getElementById('next-multiplier');
         const boostCountEl = document.getElementById('boost-count');
+        const friendsCountEl = document.getElementById('friends-count');
         const achievementsListEl = document.getElementById('achievements-list');
         const boostBtn = document.getElementById('boost-btn');
         
@@ -1004,6 +1257,15 @@
         const boostPriceEl = document.getElementById('boost-price');
         const boostStatsEl = document.getElementById('boost-stats');
         const boostPurchasedEl = document.getElementById('boost-purchased');
+        
+        // Элементы системы друзей
+        const friendsModal = document.getElementById('friends-modal');
+        const closeFriendsBtn = document.getElementById('close-friends');
+        const friendCodeEl = document.getElementById('friend-code');
+        const copyCodeBtn = document.getElementById('copy-code-btn');
+        const friendInput = document.getElementById('friend-input');
+        const addFriendBtn = document.getElementById('add-friend-btn');
+        const friendsListEl = document.getElementById('friends-list');
         
         // Флаг для предотвращения множественных кликов
         let isProcessingClick = false;
@@ -1077,18 +1339,154 @@
             }
         }
         
+        // Генерация уникального 6-значного кода друга
+        function generateFriendCode() {
+            if (!friendCode) {
+                // Генерируем новый код только если его еще нет
+                let code = '';
+                for (let i = 0; i < 6; i++) {
+                    code += Math.floor(Math.random() * 10); // Цифра от 0 до 9
+                }
+                friendCode = code;
+            }
+            return friendCode;
+        }
+        
+        // Проверка валидности кода друга
+        function isValidFriendCode(code) {
+            return /^\d{6}$/.test(code); // Ровно 6 цифр
+        }
+        
+        // Обновление списка друзей в UI
+        function updateFriendsList() {
+            friendsListEl.innerHTML = '';
+            
+            if (friends.length === 0) {
+                friendsListEl.innerHTML = '<div class="empty-friends">У вас пока нет друзей. Добавьте друга по коду!</div>';
+            } else {
+                friends.forEach((friend, index) => {
+                    const friendItem = document.createElement('div');
+                    friendItem.className = 'friend-item';
+                    
+                    const date = new Date(friend.date);
+                    const formattedDate = date.toLocaleDateString('ru-RU', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                    
+                    friendItem.innerHTML = `
+                        <div>
+                            <div class="friend-code">${friend.code}</div>
+                            <div class="friend-date">Добавлен: ${formattedDate}</div>
+                        </div>
+                        <div class="friend-actions">
+                            <button class="friend-btn remove" data-index="${index}">Удалить</button>
+                        </div>
+                    `;
+                    
+                    friendsListEl.appendChild(friendItem);
+                });
+                
+                // Добавляем обработчики для кнопок удаления
+                document.querySelectorAll('.friend-btn.remove').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        removeFriend(index);
+                    });
+                });
+            }
+            
+            friendsCountEl.textContent = friends.length;
+            
+            // Проверяем достижение "Социальный игрок"
+            if (friends.length >= 5 && !achievements.socialPlayer) {
+                achievements.socialPlayer = true;
+                saveGame();
+                showFriendNotification('🎉 Достижение разблокировано: "Социальный игрок"!');
+            }
+        }
+        
+        // Добавление друга по коду
+        function addFriend(code) {
+            // Проверяем валидность кода
+            if (!isValidFriendCode(code)) {
+                showFriendNotification('❌ Неверный код! Код должен содержать 6 цифр.', true);
+                return false;
+            }
+            
+            // Проверяем, не добавляем ли мы себя
+            if (code === friendCode) {
+                showFriendNotification('❌ Нельзя добавить себя в друзья!', true);
+                return false;
+            }
+            
+            // Проверяем, нет ли уже такого друга
+            if (friends.some(friend => friend.code === code)) {
+                showFriendNotification('❌ Этот друг уже добавлен!', true);
+                return false;
+            }
+            
+            // Добавляем друга
+            const newFriend = {
+                code: code,
+                date: new Date().toISOString()
+            };
+            
+            friends.push(newFriend);
+            updateFriendsList();
+            saveGame();
+            
+            showFriendNotification('✅ Друг успешно добавлен!');
+            friendInput.value = ''; // Очищаем поле ввода
+            
+            return true;
+        }
+        
+        // Удаление друга
+        function removeFriend(index) {
+            if (index >= 0 && index < friends.length) {
+                friends.splice(index, 1);
+                updateFriendsList();
+                saveGame();
+                showFriendNotification('✅ Друг удален!');
+            }
+        }
+        
+        // Показать уведомление для системы друзей
+        function showFriendNotification(message, isError = false) {
+            friendNotification.textContent = message;
+            friendNotification.classList.remove('error');
+            
+            if (isError) {
+                friendNotification.classList.add('error');
+            }
+            
+            friendNotification.classList.add('show');
+            
+            setTimeout(() => {
+                friendNotification.classList.remove('show');
+            }, 3000);
+        }
+        
         // Инициализация игры
         function initGame() {
             loadGame();
             updateUI();
             updateAchievementsList();
             updateShop();
+            updateFriendsList();
+            
+            // Генерируем код друга, если его еще нет
+            generateFriendCode();
+            friendCodeEl.textContent = friendCode;
             
             // Обработчики событий - универсальные для ПК и мобильных
             setupClickHandlers();
             
             multiplyBtn.addEventListener('click', upgradeMultiplier);
             shopBtn.addEventListener('click', openShop);
+            friendsBtn.addEventListener('click', openFriendsModal);
             achievementsBtn.addEventListener('click', showAchievements);
             saveBtn.addEventListener('click', saveGame);
             resetBtn.addEventListener('click', resetGame);
@@ -1096,10 +1494,30 @@
                 secretModal.style.display = 'none';
             });
             closeShopBtn.addEventListener('click', closeShop);
+            closeFriendsBtn.addEventListener('click', closeFriendsModal);
             boostBtn.addEventListener('click', activateBoost);
             
             // Обработчик покупки авто-клика
             autoclickItem.addEventListener('click', buyAutoClick);
+            
+            // Обработчики для системы друзей
+            copyCodeBtn.addEventListener('click', copyFriendCode);
+            addFriendBtn.addEventListener('click', () => {
+                const code = friendInput.value.trim();
+                if (code) {
+                    addFriend(code);
+                }
+            });
+            
+            // Добавляем обработчик нажатия Enter в поле ввода кода
+            friendInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const code = friendInput.value.trim();
+                    if (code) {
+                        addFriend(code);
+                    }
+                }
+            });
             
             // Обновляем текст кнопки улучшения множителя
             updateMultiplyButton();
@@ -1283,6 +1701,29 @@
         // Закрытие магазина
         function closeShop() {
             shopModal.style.display = 'none';
+        }
+        
+        // Открытие модального окна друзей
+        function openFriendsModal() {
+            friendsModal.style.display = 'flex';
+            updateFriendsList();
+        }
+        
+        // Закрытие модального окна друзей
+        function closeFriendsModal() {
+            friendsModal.style.display = 'none';
+        }
+        
+        // Копирование кода друга в буфер обмена
+        function copyFriendCode() {
+            navigator.clipboard.writeText(friendCode)
+                .then(() => {
+                    showFriendNotification('✅ Код скопирован в буфер обмена!');
+                })
+                .catch(err => {
+                    showFriendNotification('❌ Ошибка при копировании кода', true);
+                    console.error('Ошибка при копировании кода:', err);
+                });
         }
         
         // Обновление магазина
@@ -1505,6 +1946,11 @@
                 achievements.coin1000 = true;
                 saveGame();
             }
+            
+            if (totalCoins >= 1000000 && !achievements.richPlayer) {
+                achievements.richPlayer = true;
+                saveGame();
+            }
         }
         
         // Обновление интерфейса
@@ -1515,6 +1961,7 @@
             totalCoinsEl.textContent = formatNumber(totalCoins);
             currentMultiplierEl.textContent = `x${multiplier}`;
             boostCountEl.textContent = boostPurchasedCount;
+            friendsCountEl.textContent = friends.length;
             
             if (stage === 1) {
                 nextMultiplierEl.textContent = `x${multiplier + 1}`;
@@ -1553,8 +2000,9 @@
                 { id: 'coin1000', title: '1000 монет', description: 'Заработайте 1000 монет', condition: totalCoins >= 1000, unlocked: achievements.coin1000 },
                 { id: 'blackHat', title: 'Черная шляпа', description: 'Откройте секретную очивку', condition: stage === 2, unlocked: achievements.blackHat },
                 { id: 'multiplier500', title: 'Множитель x500', description: 'Достигните множителя x500', condition: multiplier >= 500, unlocked: achievements.multiplier500 },
-                { id: 'boostMaster', title: 'Мастер бустов', description: 'Купите 5 бустов', condition: boostPurchasedCount >= 5, unlocked: boostPurchasedCount >= 5 },
-                { id: 'richPlayer', title: 'Богатый игрок', description: 'Заработайте 1 миллион монет', condition: totalCoins >= 1000000, unlocked: totalCoins >= 1000000 }
+                { id: 'boostMaster', title: 'Мастер бустов', description: 'Купите 5 бустов', condition: boostPurchasedCount >= 5, unlocked: achievements.boostMaster },
+                { id: 'richPlayer', title: 'Богатый игрок', description: 'Заработайте 1 миллион монет', condition: totalCoins >= 1000000, unlocked: achievements.richPlayer },
+                { id: 'socialPlayer', title: 'Социальный игрок', description: 'Добавьте 5 друзей', condition: friends.length >= 5, unlocked: achievements.socialPlayer }
             ];
             
             achievementsListEl.innerHTML = '';
@@ -1588,7 +2036,9 @@
                 autoClickActive,
                 autoClickTimeLeft,
                 boostPurchasedCount,
-                currentBoostCost
+                currentBoostCost,
+                friendCode,
+                friends
             };
             
             localStorage.setItem('coinClickerGame', JSON.stringify(gameData));
@@ -1620,7 +2070,10 @@
                         coin500: false,
                         coin1000: false,
                         blackHat: false,
-                        multiplier500: false
+                        multiplier500: false,
+                        boostMaster: false,
+                        richPlayer: false,
+                        socialPlayer: false
                     };
                     
                     // Загружаем данные магазина
@@ -1628,6 +2081,10 @@
                     autoClickTimeLeft = gameData.autoClickTimeLeft || 0;
                     boostPurchasedCount = gameData.boostPurchasedCount || 0;
                     currentBoostCost = gameData.currentBoostCost || 1500;
+                    
+                    // Загружаем данные системы друзей
+                    friendCode = gameData.friendCode || '';
+                    friends = gameData.friends || [];
                     
                     // Обновляем отображение в зависимости от этапа
                     if (stage === 2) {
@@ -1669,7 +2126,10 @@
                     coin500: false,
                     coin1000: false,
                     blackHat: false,
-                    multiplier500: false
+                    multiplier500: false,
+                    boostMaster: false,
+                    richPlayer: false,
+                    socialPlayer: false
                 };
                 
                 // Сбрасываем данные магазина
@@ -1679,6 +2139,10 @@
                 currentBoostCost = 1500;
                 if (clickInterval) clearInterval(clickInterval);
                 if (autoClickInterval) clearInterval(autoClickInterval);
+                
+                // Сбрасываем данные системы друзей
+                friendCode = '';
+                friends = [];
                 
                 // Сбрасываем внешний вид
                 coinEl.style.display = 'block';
@@ -1690,11 +2154,16 @@
                 boostBtn.disabled = false;
                 boostBtn.classList.remove('active');
                 
+                // Генерируем новый код друга
+                generateFriendCode();
+                friendCodeEl.textContent = friendCode;
+                
                 // Очищаем сохранение
                 localStorage.removeItem('coinClickerGame');
                 
                 updateUI();
                 updateShop();
+                updateFriendsList();
             }
         }
         
