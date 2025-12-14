@@ -35,7 +35,6 @@
             width: 100%;
             margin: 0 auto;
             text-align: center;
-            position: relative;
         }
         
         h1 {
@@ -453,37 +452,6 @@
             100% { box-shadow: 0 0 20px rgba(0, 200, 83, 0.7); }
         }
         
-        /* Кнопка друзей в виде маленького кружочка */
-        .friends-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #2196F3, #1976D2);
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s;
-            z-index: 10;
-        }
-        
-        .friends-btn:hover {
-            transform: translateY(-2px) scale(1.1);
-            box-shadow: 0 4px 10px rgba(33, 150, 243, 0.4);
-            background: linear-gradient(135deg, #42A5F5, #1E88E5);
-        }
-        
-        .friends-btn:active {
-            transform: translateY(1px) scale(1);
-        }
-        
         .stats, .achievements {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
@@ -569,8 +537,8 @@
             font-size: 0.9rem;
         }
         
-        /* Модальные окна */
-        .friends-modal, .shop-modal {
+        /* Модальное окно магазина */
+        .shop-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -584,271 +552,30 @@
             padding: 15px;
         }
         
-        .friends-modal-content, .shop-modal-content {
+        .shop-modal-content {
             background: linear-gradient(135deg, #2d1b69 0%, #1a0f3d 100%);
             padding: 25px;
             border-radius: 15px;
             max-width: 500px;
             width: 100%;
             text-align: center;
-            border: 3px solid #2196F3;
-            box-shadow: 0 0 40px rgba(33, 150, 243, 0.7);
+            border: 3px solid #9C27B0;
+            box-shadow: 0 0 40px rgba(156, 39, 176, 0.7);
             position: relative;
         }
         
-        .shop-modal-content {
-            border: 3px solid #9C27B0;
-            box-shadow: 0 0 40px rgba(156, 39, 176, 0.7);
-        }
-        
         @media (min-width: 768px) {
-            .friends-modal-content, .shop-modal-content {
+            .shop-modal-content {
                 padding: 35px;
                 border-radius: 20px;
             }
         }
         
-        .friends-modal h2, .shop-modal h2 {
+        .shop-modal h2 {
             color: #FFD700;
             margin-bottom: 25px;
             font-size: 2rem;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        
-        .friends-section {
-            margin-bottom: 25px;
-        }
-        
-        .friends-section h3 {
-            color: #4CAF50;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-        
-        .friends-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin: 15px 0;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-        }
-        
-        .friend-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            margin: 5px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            border-left: 3px solid #2196F3;
-        }
-        
-        .friend-info {
-            flex: 1;
-            text-align: left;
-        }
-        
-        .friend-username {
-            font-weight: bold;
-            color: #FFD700;
-            font-size: 1.1rem;
-        }
-        
-        .friend-username::before {
-            content: '@';
-            color: #4CAF50;
-            font-weight: bold;
-        }
-        
-        .friend-date {
-            font-size: 0.7rem;
-            color: #aaa;
-            margin-top: 2px;
-        }
-        
-        .friend-actions {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .friend-btn {
-            background: rgba(33, 150, 243, 0.2);
-            border: 1px solid #2196F3;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.7rem;
-            transition: all 0.2s;
-        }
-        
-        .friend-btn:hover {
-            background: rgba(33, 150, 243, 0.4);
-        }
-        
-        .friend-btn.remove {
-            background: rgba(244, 67, 54, 0.2);
-            border-color: #f44336;
-        }
-        
-        .friend-btn.remove:hover {
-            background: rgba(244, 67, 54, 0.4);
-        }
-        
-        .username-section {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .your-username {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #FFD700;
-            margin: 15px 0;
-            letter-spacing: 1px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 8px;
-            border: 2px dashed #4CAF50;
-        }
-        
-        .username-input-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            align-items: center;
-        }
-        
-        .username-input {
-            flex: 1;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 2px solid #2196F3;
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            font-size: 1rem;
-            text-align: center;
-        }
-        
-        .username-input::placeholder {
-            color: #aaa;
-        }
-        
-        .set-username-btn {
-            background: linear-gradient(to bottom, #2196F3, #1976D2);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: bold;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-        
-        .set-username-btn:hover {
-            background: linear-gradient(to bottom, #42A5F5, #1E88E5);
-            transform: translateY(-2px);
-        }
-        
-        .invite-link-section {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .invite-link {
-            font-size: 0.9rem;
-            color: #4CAF50;
-            margin: 15px 0;
-            word-break: break-all;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #4CAF50;
-        }
-        
-        .copy-btn {
-            background: linear-gradient(to bottom, #4CAF50, #2E7D32);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: all 0.3s;
-        }
-        
-        .copy-btn:hover {
-            background: linear-gradient(to bottom, #66BB6A, #388E3C);
-            transform: translateY(-2px);
-        }
-        
-        .add-friend-section {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .friend-input {
-            flex: 1;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 2px solid #2196F3;
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
-            font-size: 1rem;
-            text-align: center;
-        }
-        
-        .friend-input::placeholder {
-            color: #aaa;
-        }
-        
-        .add-friend-btn {
-            background: linear-gradient(to bottom, #2196F3, #1976D2);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: bold;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-        
-        .add-friend-btn:hover {
-            background: linear-gradient(to bottom, #42A5F5, #1E88E5);
-            transform: translateY(-2px);
-        }
-        
-        .empty-friends {
-            color: #aaa;
-            font-style: italic;
-            padding: 20px;
-        }
-        
-        .friend-help {
-            color: #aaa;
-            font-size: 0.8rem;
-            margin-top: 15px;
-            line-height: 1.4;
         }
         
         .shop-items {
@@ -930,7 +657,7 @@
             font-weight: bold;
         }
         
-        .close-friends, .close-shop {
+        .close-shop {
             position: absolute;
             top: 15px;
             right: 15px;
@@ -948,7 +675,7 @@
             transition: all 0.3s;
         }
         
-        .close-friends:hover, .close-shop:hover {
+        .close-shop:hover {
             background: rgba(255, 215, 0, 0.1);
             transform: rotate(90deg);
         }
@@ -1030,11 +757,12 @@
             }
         }
         
-        /* Уведомления */
-        .save-notification, .friend-notification {
+        /* Уведомление о сохранении */
+        .save-notification {
             position: fixed;
             top: 20px;
             right: 20px;
+            background: rgba(33, 150, 243, 0.9);
             color: white;
             padding: 12px 20px;
             border-radius: 8px;
@@ -1045,23 +773,7 @@
             max-width: 300px;
         }
         
-        .save-notification {
-            background: rgba(33, 150, 243, 0.9);
-        }
-        
-        .friend-notification {
-            background: rgba(76, 175, 80, 0.9);
-        }
-        
-        .friend-notification.error {
-            background: rgba(244, 67, 54, 0.9);
-        }
-        
-        .friend-notification.info {
-            background: rgba(255, 152, 0, 0.9);
-        }
-        
-        .save-notification.show, .friend-notification.show {
+        .save-notification.show {
             transform: translateX(0);
         }
         
@@ -1111,37 +823,22 @@
                 font-size: 0.9rem;
             }
             
-            .friends-modal-content, .shop-modal-content {
+            .shop-modal-content {
                 padding: 15px;
             }
             
-            .shop-item, .friend-item {
+            .shop-item {
                 padding: 15px;
             }
             
             .shop-item-title {
                 font-size: 1.2rem;
             }
-            
-            .friends-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 1rem;
-                top: 15px;
-                right: 15px;
-            }
-            
-            .input-group, .username-input-group {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Кнопка друзей в правом верхнем углу -->
-        <button class="friends-btn" id="friends-btn" title="Друзья">👥</button>
-        
         <h1>Монетный кликер</h1>
         
         <div class="game-stage" id="game-stage">Этап 1: Золотая монета</div>
@@ -1189,9 +886,6 @@
                 <div class="stat-item">
                     <div>Куплено бустов: <span id="boost-count">0</span></div>
                 </div>
-                <div class="stat-item">
-                    <div>Друзей: <span id="friends-count">0</span></div>
-                </div>
             </div>
         </div>
         
@@ -1199,54 +893,6 @@
             <h2>Достижения</h2>
             <div class="achievements-content" id="achievements-list">
                 <!-- Достижения будут загружены через JavaScript -->
-            </div>
-        </div>
-    </div>
-    
-    <!-- Модальное окно друзей -->
-    <div class="friends-modal" id="friends-modal">
-        <div class="friends-modal-content">
-            <button class="close-friends" id="close-friends">&times;</button>
-            <h2>👥 Система друзей</h2>
-            
-            <!-- Секция с именем пользователя -->
-            <div class="username-section">
-                <h3>Ваше имя пользователя:</h3>
-                <div class="your-username" id="user-username">@Игрок</div>
-                <div class="username-input-group">
-                    <input type="text" class="username-input" id="username-input" placeholder="Введите новое имя (3-20 символов)" maxlength="20">
-                    <button class="set-username-btn" id="set-username-btn">Сохранить</button>
-                </div>
-            </div>
-            
-            <!-- Секция со ссылкой для приглашения -->
-            <div class="invite-link-section">
-                <h3>Ссылка для добавления в друзья:</h3>
-                <div class="invite-link" id="invite-link">Загрузка...</div>
-                <button class="copy-btn" id="copy-link-btn">📋 Скопировать ссылку</button>
-                <div class="friend-help">
-                    Отправьте эту ссылку другу. При переходе по ней друг автоматически добавится к вам в друзья!
-                </div>
-            </div>
-            
-            <!-- Секция для добавления друга по имени -->
-            <div class="add-friend-section">
-                <h3>Добавить друга по имени:</h3>
-                <div class="input-group">
-                    <input type="text" class="friend-input" id="friend-input" placeholder="Введите @username друга">
-                    <button class="add-friend-btn" id="add-friend-btn">Добавить</button>
-                </div>
-                <div class="friend-help">
-                    Введите имя пользователя друга, чтобы добавить его в друзья.
-                </div>
-            </div>
-            
-            <!-- Список друзей -->
-            <div class="friends-section">
-                <h3>Ваши друзья:</h3>
-                <div class="friends-list" id="friends-list">
-                    <!-- Список друзей будет загружен через JavaScript -->
-                </div>
             </div>
         </div>
     </div>
@@ -1292,7 +938,6 @@
     
     <div class="save-notification" id="save-notification">Прогресс сохранен!</div>
     <div class="purchase-notification" id="purchase-notification">Покупка успешно совершена!</div>
-    <div class="friend-notification" id="friend-notification"></div>
 
     <script>
         // Игровые переменные
@@ -1308,10 +953,7 @@
             coin500: false,
             coin1000: false,
             blackHat: false,
-            multiplier500: false,
-            boostMaster: false,
-            richPlayer: false,
-            socialPlayer: false
+            multiplier500: false
         };
         
         // Переменные для магазина и бустов
@@ -1324,10 +966,6 @@
         let currentBoostCost = 1500; // Начальная стоимость буста
         const BOOST_COST_INCREASE = 500000; // Увеличение цены на 500к после каждой покупки
         
-        // Переменные для системы друзей
-        let username = 'Игрок';
-        let friends = []; // Массив объектов {username: 'username', date: timestamp}
-        
         // Элементы DOM
         const coinCountEl = document.getElementById('coin-count');
         const multiplierEl = document.getElementById('multiplier');
@@ -1339,7 +977,6 @@
         const hatEffectEl = document.getElementById('hat-effect');
         const multiplyBtn = document.getElementById('multiply-btn');
         const shopBtn = document.getElementById('shop-btn');
-        const friendsBtn = document.getElementById('friends-btn');
         const achievementsBtn = document.getElementById('achievements-btn');
         const saveBtn = document.getElementById('save-btn');
         const resetBtn = document.getElementById('reset-btn');
@@ -1348,13 +985,11 @@
         const closeModalBtn = document.getElementById('close-modal');
         const saveNotification = document.getElementById('save-notification');
         const purchaseNotification = document.getElementById('purchase-notification');
-        const friendNotification = document.getElementById('friend-notification');
         const totalClicksEl = document.getElementById('total-clicks');
         const totalCoinsEl = document.getElementById('total-coins');
         const currentMultiplierEl = document.getElementById('current-multiplier');
         const nextMultiplierEl = document.getElementById('next-multiplier');
         const boostCountEl = document.getElementById('boost-count');
-        const friendsCountEl = document.getElementById('friends-count');
         const achievementsListEl = document.getElementById('achievements-list');
         const boostBtn = document.getElementById('boost-btn');
         
@@ -1369,18 +1004,6 @@
         const boostPriceEl = document.getElementById('boost-price');
         const boostStatsEl = document.getElementById('boost-stats');
         const boostPurchasedEl = document.getElementById('boost-purchased');
-        
-        // Элементы системы друзей
-        const friendsModal = document.getElementById('friends-modal');
-        const closeFriendsBtn = document.getElementById('close-friends');
-        const userUsernameEl = document.getElementById('user-username');
-        const usernameInput = document.getElementById('username-input');
-        const setUsernameBtn = document.getElementById('set-username-btn');
-        const inviteLinkEl = document.getElementById('invite-link');
-        const copyLinkBtn = document.getElementById('copy-link-btn');
-        const friendInput = document.getElementById('friend-input');
-        const addFriendBtn = document.getElementById('add-friend-btn');
-        const friendsListEl = document.getElementById('friends-list');
         
         // Флаг для предотвращения множественных кликов
         let isProcessingClick = false;
@@ -1454,204 +1077,6 @@
             }
         }
         
-        // Генерация ссылки для добавления в друзья
-        function generateInviteLink() {
-            // Создаем ссылку с параметром для добавления друга
-            const baseUrl = window.location.href.split('?')[0];
-            const encodedUsername = encodeURIComponent(username);
-            return `${baseUrl}?addfriend=${encodedUsername}`;
-        }
-        
-        // Проверка и обработка параметров URL для добавления друга
-        function processUrlParams() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const friendUsername = urlParams.get('addfriend');
-            
-            if (friendUsername) {
-                // Декодируем имя пользователя
-                const decodedUsername = decodeURIComponent(friendUsername);
-                
-                // Добавляем друга
-                if (addFriend(decodedUsername, true)) {
-                    // Убираем параметр из URL
-                    const newUrl = window.location.href.split('?')[0];
-                    window.history.replaceState({}, document.title, newUrl);
-                    
-                    // Показываем уведомление
-                    showFriendNotification(`✅ Вы добавили ${decodedUsername} в друзья через ссылку!`);
-                }
-            }
-        }
-        
-        // Проверка валидности имени пользователя
-        function isValidUsername(name) {
-            if (!name || name.trim().length < 3 || name.trim().length > 20) {
-                return false;
-            }
-            
-            // Проверяем, что имя содержит только буквы, цифры и подчеркивания
-            const validRegex = /^[a-zA-Z0-9а-яА-Я_]+$/;
-            return validRegex.test(name.trim());
-        }
-        
-        // Обновление списка друзей в UI
-        function updateFriendsList() {
-            friendsListEl.innerHTML = '';
-            
-            if (friends.length === 0) {
-                friendsListEl.innerHTML = '<div class="empty-friends">У вас пока нет друзей. Добавьте друга по имени или отправьте ссылку!</div>';
-            } else {
-                friends.forEach((friend, index) => {
-                    const friendItem = document.createElement('div');
-                    friendItem.className = 'friend-item';
-                    
-                    const date = new Date(friend.date);
-                    const formattedDate = date.toLocaleDateString('ru-RU', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                    });
-                    
-                    friendItem.innerHTML = `
-                        <div class="friend-info">
-                            <div class="friend-username">${friend.username}</div>
-                            <div class="friend-date">Добавлен: ${formattedDate}</div>
-                        </div>
-                        <div class="friend-actions">
-                            <button class="friend-btn remove" data-username="${friend.username}">Удалить</button>
-                        </div>
-                    `;
-                    
-                    friendsListEl.appendChild(friendItem);
-                });
-                
-                // Добавляем обработчики для кнопок удаления
-                document.querySelectorAll('.friend-btn.remove').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const usernameToRemove = this.getAttribute('data-username');
-                        removeFriend(usernameToRemove);
-                    });
-                });
-            }
-            
-            friendsCountEl.textContent = friends.length;
-            
-            // Проверяем достижение "Социальный игрок"
-            if (friends.length >= 5 && !achievements.socialPlayer) {
-                achievements.socialPlayer = true;
-                saveGame();
-                showFriendNotification('🎉 Достижение разблокировано: "Социальный игрок"!');
-            }
-        }
-        
-        // Добавление друга по имени пользователя
-        function addFriend(friendUsername, fromLink = false) {
-            // Очищаем имя от лишних символов
-            friendUsername = friendUsername.trim();
-            
-            // Убираем @ в начале, если есть
-            if (friendUsername.startsWith('@')) {
-                friendUsername = friendUsername.substring(1);
-            }
-            
-            // Проверяем валидность имени
-            if (!isValidUsername(friendUsername)) {
-                showFriendNotification('❌ Неверное имя пользователя! Имя должно быть от 3 до 20 символов и содержать только буквы, цифры и подчеркивания.', 'error');
-                return false;
-            }
-            
-            // Проверяем, не добавляем ли мы себя
-            if (friendUsername.toLowerCase() === username.toLowerCase()) {
-                showFriendNotification('❌ Нельзя добавить себя в друзья!', 'error');
-                return false;
-            }
-            
-            // Проверяем, нет ли уже такого друга
-            if (friends.some(friend => friend.username.toLowerCase() === friendUsername.toLowerCase())) {
-                if (!fromLink) {
-                    showFriendNotification('❌ Этот друг уже добавлен!', 'error');
-                }
-                return false;
-            }
-            
-            // Добавляем друга
-            const newFriend = {
-                username: friendUsername,
-                date: new Date().toISOString()
-            };
-            
-            friends.push(newFriend);
-            updateFriendsList();
-            saveGame();
-            
-            if (!fromLink) {
-                showFriendNotification(`✅ Друг @${friendUsername} успешно добавлен!`);
-                friendInput.value = ''; // Очищаем поле ввода
-            }
-            
-            return true;
-        }
-        
-        // Удаление друга
-        function removeFriend(friendUsername) {
-            const index = friends.findIndex(friend => friend.username === friendUsername);
-            if (index !== -1) {
-                friends.splice(index, 1);
-                updateFriendsList();
-                saveGame();
-                showFriendNotification(`✅ Друг @${friendUsername} удален!`);
-            }
-        }
-        
-        // Установка имени пользователя
-        function setUsername(newUsername) {
-            newUsername = newUsername.trim();
-            
-            // Проверяем валидность имени
-            if (!isValidUsername(newUsername)) {
-                showFriendNotification('❌ Неверное имя пользователя! Имя должно быть от 3 до 20 символов и содержать только буквы, цифры и подчеркивания.', 'error');
-                return false;
-            }
-            
-            // Обновляем имя пользователя
-            username = newUsername;
-            userUsernameEl.textContent = `@${username}`;
-            
-            // Обновляем ссылку приглашения
-            updateInviteLink();
-            
-            saveGame();
-            showFriendNotification(`✅ Имя пользователя изменено на @${username}!`);
-            
-            usernameInput.value = ''; // Очищаем поле ввода
-            
-            return true;
-        }
-        
-        // Обновление ссылки приглашения
-        function updateInviteLink() {
-            const link = generateInviteLink();
-            inviteLinkEl.textContent = link;
-        }
-        
-        // Показать уведомление для системы друзей
-        function showFriendNotification(message, type = 'success') {
-            friendNotification.textContent = message;
-            friendNotification.className = 'friend-notification'; // Сбрасываем классы
-            
-            if (type === 'error') {
-                friendNotification.classList.add('error');
-            } else if (type === 'info') {
-                friendNotification.classList.add('info');
-            }
-            
-            friendNotification.classList.add('show');
-            
-            setTimeout(() => {
-                friendNotification.classList.remove('show');
-            }, 4000);
-        }
-        
         // Инициализация игры
         function initGame() {
             loadGame();
@@ -1659,18 +1084,11 @@
             updateAchievementsList();
             updateShop();
             
-            // Устанавливаем начальное имя пользователя
-            userUsernameEl.textContent = `@${username}`;
-            
-            // Обновляем ссылку приглашения
-            updateInviteLink();
-            
             // Обработчики событий - универсальные для ПК и мобильных
             setupClickHandlers();
             
             multiplyBtn.addEventListener('click', upgradeMultiplier);
             shopBtn.addEventListener('click', openShop);
-            friendsBtn.addEventListener('click', openFriendsModal);
             achievementsBtn.addEventListener('click', showAchievements);
             saveBtn.addEventListener('click', saveGame);
             resetBtn.addEventListener('click', resetGame);
@@ -1678,49 +1096,10 @@
                 secretModal.style.display = 'none';
             });
             closeShopBtn.addEventListener('click', closeShop);
-            closeFriendsBtn.addEventListener('click', closeFriendsModal);
             boostBtn.addEventListener('click', activateBoost);
             
             // Обработчик покупки авто-клика
             autoclickItem.addEventListener('click', buyAutoClick);
-            
-            // Обработчики для системы друзей
-            setUsernameBtn.addEventListener('click', () => {
-                const newUsername = usernameInput.value.trim();
-                if (newUsername) {
-                    setUsername(newUsername);
-                }
-            });
-            
-            copyLinkBtn.addEventListener('click', copyInviteLink);
-            addFriendBtn.addEventListener('click', () => {
-                const friendUsername = friendInput.value.trim();
-                if (friendUsername) {
-                    addFriend(friendUsername);
-                }
-            });
-            
-            // Добавляем обработчик нажатия Enter в полях ввода
-            usernameInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const newUsername = usernameInput.value.trim();
-                    if (newUsername) {
-                        setUsername(newUsername);
-                    }
-                }
-            });
-            
-            friendInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    const friendUsername = friendInput.value.trim();
-                    if (friendUsername) {
-                        addFriend(friendUsername);
-                    }
-                }
-            });
-            
-            // Обновляем список друзей
-            updateFriendsList();
             
             // Обновляем текст кнопки улучшения множителя
             updateMultiplyButton();
@@ -1729,9 +1108,6 @@
             if (autoClickActive && autoClickTimeLeft > 0) {
                 startAutoClick();
             }
-            
-            // Обрабатываем параметры URL для добавления друга по ссылке
-            processUrlParams();
         }
         
         // Настройка обработчиков кликов для ПК и мобильных
@@ -1907,30 +1283,6 @@
         // Закрытие магазина
         function closeShop() {
             shopModal.style.display = 'none';
-        }
-        
-        // Открытие модального окна друзей
-        function openFriendsModal() {
-            friendsModal.style.display = 'flex';
-            updateFriendsList();
-        }
-        
-        // Закрытие модального окна друзей
-        function closeFriendsModal() {
-            friendsModal.style.display = 'none';
-        }
-        
-        // Копирование ссылки приглашения в буфер обмена
-        function copyInviteLink() {
-            const link = generateInviteLink();
-            navigator.clipboard.writeText(link)
-                .then(() => {
-                    showFriendNotification('✅ Ссылка скопирована в буфер обмена!');
-                })
-                .catch(err => {
-                    showFriendNotification('❌ Ошибка при копировании ссылки', 'error');
-                    console.error('Ошибка при копировании ссылки:', err);
-                });
         }
         
         // Обновление магазина
@@ -2153,11 +1505,6 @@
                 achievements.coin1000 = true;
                 saveGame();
             }
-            
-            if (totalCoins >= 1000000 && !achievements.richPlayer) {
-                achievements.richPlayer = true;
-                saveGame();
-            }
         }
         
         // Обновление интерфейса
@@ -2168,7 +1515,6 @@
             totalCoinsEl.textContent = formatNumber(totalCoins);
             currentMultiplierEl.textContent = `x${multiplier}`;
             boostCountEl.textContent = boostPurchasedCount;
-            friendsCountEl.textContent = friends.length;
             
             if (stage === 1) {
                 nextMultiplierEl.textContent = `x${multiplier + 1}`;
@@ -2207,9 +1553,8 @@
                 { id: 'coin1000', title: '1000 монет', description: 'Заработайте 1000 монет', condition: totalCoins >= 1000, unlocked: achievements.coin1000 },
                 { id: 'blackHat', title: 'Черная шляпа', description: 'Откройте секретную очивку', condition: stage === 2, unlocked: achievements.blackHat },
                 { id: 'multiplier500', title: 'Множитель x500', description: 'Достигните множителя x500', condition: multiplier >= 500, unlocked: achievements.multiplier500 },
-                { id: 'boostMaster', title: 'Мастер бустов', description: 'Купите 5 бустов', condition: boostPurchasedCount >= 5, unlocked: achievements.boostMaster },
-                { id: 'richPlayer', title: 'Богатый игрок', description: 'Заработайте 1 миллион монет', condition: totalCoins >= 1000000, unlocked: achievements.richPlayer },
-                { id: 'socialPlayer', title: 'Социальный игрок', description: 'Добавьте 5 друзей', condition: friends.length >= 5, unlocked: achievements.socialPlayer }
+                { id: 'boostMaster', title: 'Мастер бустов', description: 'Купите 5 бустов', condition: boostPurchasedCount >= 5, unlocked: boostPurchasedCount >= 5 },
+                { id: 'richPlayer', title: 'Богатый игрок', description: 'Заработайте 1 миллион монет', condition: totalCoins >= 1000000, unlocked: totalCoins >= 1000000 }
             ];
             
             achievementsListEl.innerHTML = '';
@@ -2243,9 +1588,7 @@
                 autoClickActive,
                 autoClickTimeLeft,
                 boostPurchasedCount,
-                currentBoostCost,
-                username,
-                friends
+                currentBoostCost
             };
             
             localStorage.setItem('coinClickerGame', JSON.stringify(gameData));
@@ -2277,10 +1620,7 @@
                         coin500: false,
                         coin1000: false,
                         blackHat: false,
-                        multiplier500: false,
-                        boostMaster: false,
-                        richPlayer: false,
-                        socialPlayer: false
+                        multiplier500: false
                     };
                     
                     // Загружаем данные магазина
@@ -2288,10 +1628,6 @@
                     autoClickTimeLeft = gameData.autoClickTimeLeft || 0;
                     boostPurchasedCount = gameData.boostPurchasedCount || 0;
                     currentBoostCost = gameData.currentBoostCost || 1500;
-                    
-                    // Загружаем данные системы друзей
-                    username = gameData.username || 'Игрок';
-                    friends = gameData.friends || [];
                     
                     // Обновляем отображение в зависимости от этапа
                     if (stage === 2) {
@@ -2333,10 +1669,7 @@
                     coin500: false,
                     coin1000: false,
                     blackHat: false,
-                    multiplier500: false,
-                    boostMaster: false,
-                    richPlayer: false,
-                    socialPlayer: false
+                    multiplier500: false
                 };
                 
                 // Сбрасываем данные магазина
@@ -2346,10 +1679,6 @@
                 currentBoostCost = 1500;
                 if (clickInterval) clearInterval(clickInterval);
                 if (autoClickInterval) clearInterval(autoClickInterval);
-                
-                // Сбрасываем данные системы друзей
-                username = 'Игрок';
-                friends = [];
                 
                 // Сбрасываем внешний вид
                 coinEl.style.display = 'block';
@@ -2361,17 +1690,11 @@
                 boostBtn.disabled = false;
                 boostBtn.classList.remove('active');
                 
-                // Обновляем UI
-                updateUI();
-                updateShop();
-                updateFriendsList();
-                
-                // Обновляем имя пользователя в UI
-                userUsernameEl.textContent = `@${username}`;
-                updateInviteLink();
-                
                 // Очищаем сохранение
                 localStorage.removeItem('coinClickerGame');
+                
+                updateUI();
+                updateShop();
             }
         }
         
