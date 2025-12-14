@@ -642,14 +642,7 @@
             margin: 5px 0;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 6px;
-        }
-        
-        .friend-item.confirmed {
-            border-left: 3px solid #4CAF50;
-        }
-        
-        .friend-item.pending {
-            border-left: 3px solid #FF9800;
+            border-left: 3px solid #2196F3;
         }
         
         .friend-info {
@@ -657,24 +650,16 @@
             text-align: left;
         }
         
-        .friend-code {
+        .friend-username {
             font-weight: bold;
             color: #FFD700;
-            letter-spacing: 1px;
             font-size: 1.1rem;
         }
         
-        .friend-status {
-            font-size: 0.8rem;
-            margin-top: 3px;
-        }
-        
-        .friend-status.confirmed {
+        .friend-username::before {
+            content: '@';
             color: #4CAF50;
-        }
-        
-        .friend-status.pending {
-            color: #FF9800;
+            font-weight: bold;
         }
         
         .friend-date {
@@ -712,23 +697,81 @@
             background: rgba(244, 67, 54, 0.4);
         }
         
-        .code-section {
+        .username-section {
             background: rgba(0, 0, 0, 0.3);
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
         }
         
-        .your-code {
+        .your-username {
             font-size: 1.8rem;
             font-weight: bold;
             color: #FFD700;
             margin: 15px 0;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             background: rgba(0, 0, 0, 0.5);
             padding: 10px;
             border-radius: 8px;
             border: 2px dashed #4CAF50;
+        }
+        
+        .username-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            align-items: center;
+        }
+        
+        .username-input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #2196F3;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .username-input::placeholder {
+            color: #aaa;
+        }
+        
+        .set-username-btn {
+            background: linear-gradient(to bottom, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .set-username-btn:hover {
+            background: linear-gradient(to bottom, #42A5F5, #1E88E5);
+            transform: translateY(-2px);
+        }
+        
+        .invite-link-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .invite-link {
+            font-size: 0.9rem;
+            color: #4CAF50;
+            margin: 15px 0;
+            word-break: break-all;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #4CAF50;
         }
         
         .copy-btn {
@@ -749,13 +792,20 @@
             transform: translateY(-2px);
         }
         
+        .add-friend-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
         .input-group {
             display: flex;
             gap: 10px;
             margin-top: 15px;
         }
         
-        .code-input {
+        .friend-input {
             flex: 1;
             padding: 12px 15px;
             border-radius: 8px;
@@ -764,10 +814,9 @@
             color: white;
             font-size: 1rem;
             text-align: center;
-            letter-spacing: 1px;
         }
         
-        .code-input::placeholder {
+        .friend-input::placeholder {
             color: #aaa;
         }
         
@@ -1082,7 +1131,7 @@
                 right: 15px;
             }
             
-            .input-group {
+            .input-group, .username-input-group {
                 flex-direction: column;
             }
         }
@@ -1141,7 +1190,7 @@
                     <div>Куплено бустов: <span id="boost-count">0</span></div>
                 </div>
                 <div class="stat-item">
-                    <div>Друзей: <span id="friends-count">0</span> / <span id="confirmed-friends-count">0</span></div>
+                    <div>Друзей: <span id="friends-count">0</span></div>
                 </div>
             </div>
         </div>
@@ -1160,23 +1209,39 @@
             <button class="close-friends" id="close-friends">&times;</button>
             <h2>👥 Система друзей</h2>
             
-            <div class="friends-section">
-                <h3>Ваш код друга:</h3>
-                <div class="your-code" id="friend-code">123456</div>
-                <button class="copy-btn" id="copy-code-btn">📋 Скопировать код</button>
+            <!-- Секция с именем пользователя -->
+            <div class="username-section">
+                <h3>Ваше имя пользователя:</h3>
+                <div class="your-username" id="user-username">@Игрок</div>
+                <div class="username-input-group">
+                    <input type="text" class="username-input" id="username-input" placeholder="Введите новое имя (3-20 символов)" maxlength="20">
+                    <button class="set-username-btn" id="set-username-btn">Сохранить</button>
+                </div>
             </div>
             
-            <div class="friends-section">
-                <h3>Добавить друга:</h3>
+            <!-- Секция со ссылкой для приглашения -->
+            <div class="invite-link-section">
+                <h3>Ссылка для добавления в друзья:</h3>
+                <div class="invite-link" id="invite-link">Загрузка...</div>
+                <button class="copy-btn" id="copy-link-btn">📋 Скопировать ссылку</button>
+                <div class="friend-help">
+                    Отправьте эту ссылку другу. При переходе по ней друг автоматически добавится к вам в друзья!
+                </div>
+            </div>
+            
+            <!-- Секция для добавления друга по имени -->
+            <div class="add-friend-section">
+                <h3>Добавить друга по имени:</h3>
                 <div class="input-group">
-                    <input type="text" class="code-input" id="friend-input" placeholder="Введите код друга (6 цифр)" maxlength="6">
+                    <input type="text" class="friend-input" id="friend-input" placeholder="Введите @username друга">
                     <button class="add-friend-btn" id="add-friend-btn">Добавить</button>
                 </div>
                 <div class="friend-help">
-                    Обменяйтесь кодами с другом. Вы добавляете код друга, друг добавляет ваш код. После этого дружба подтверждается!
+                    Введите имя пользователя друга, чтобы добавить его в друзья.
                 </div>
             </div>
             
+            <!-- Список друзей -->
             <div class="friends-section">
                 <h3>Ваши друзья:</h3>
                 <div class="friends-list" id="friends-list">
@@ -1260,10 +1325,8 @@
         const BOOST_COST_INCREASE = 500000; // Увеличение цены на 500к после каждой покупки
         
         // Переменные для системы друзей
-        let friendCode = '';
-        // friends: массив объектов {code: '123456', status: 'pending'/'confirmed', date: timestamp}
-        let friends = []; 
-        let pendingNotifications = []; // Очередь уведомлений о новых друзьях
+        let username = 'Игрок';
+        let friends = []; // Массив объектов {username: 'username', date: timestamp}
         
         // Элементы DOM
         const coinCountEl = document.getElementById('coin-count');
@@ -1292,7 +1355,6 @@
         const nextMultiplierEl = document.getElementById('next-multiplier');
         const boostCountEl = document.getElementById('boost-count');
         const friendsCountEl = document.getElementById('friends-count');
-        const confirmedFriendsCountEl = document.getElementById('confirmed-friends-count');
         const achievementsListEl = document.getElementById('achievements-list');
         const boostBtn = document.getElementById('boost-btn');
         
@@ -1311,8 +1373,11 @@
         // Элементы системы друзей
         const friendsModal = document.getElementById('friends-modal');
         const closeFriendsBtn = document.getElementById('close-friends');
-        const friendCodeEl = document.getElementById('friend-code');
-        const copyCodeBtn = document.getElementById('copy-code-btn');
+        const userUsernameEl = document.getElementById('user-username');
+        const usernameInput = document.getElementById('username-input');
+        const setUsernameBtn = document.getElementById('set-username-btn');
+        const inviteLinkEl = document.getElementById('invite-link');
+        const copyLinkBtn = document.getElementById('copy-link-btn');
         const friendInput = document.getElementById('friend-input');
         const addFriendBtn = document.getElementById('add-friend-btn');
         const friendsListEl = document.getElementById('friends-list');
@@ -1389,45 +1454,44 @@
             }
         }
         
-        // Генерация уникального 6-значного кода друга
-        function generateFriendCode() {
-            if (!friendCode) {
-                // Генерируем новый код только если его еще нет
-                let code = '';
-                for (let i = 0; i < 6; i++) {
-                    code += Math.floor(Math.random() * 10); // Цифра от 0 до 9
+        // Генерация ссылки для добавления в друзья
+        function generateInviteLink() {
+            // Создаем ссылку с параметром для добавления друга
+            const baseUrl = window.location.href.split('?')[0];
+            const encodedUsername = encodeURIComponent(username);
+            return `${baseUrl}?addfriend=${encodedUsername}`;
+        }
+        
+        // Проверка и обработка параметров URL для добавления друга
+        function processUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const friendUsername = urlParams.get('addfriend');
+            
+            if (friendUsername) {
+                // Декодируем имя пользователя
+                const decodedUsername = decodeURIComponent(friendUsername);
+                
+                // Добавляем друга
+                if (addFriend(decodedUsername, true)) {
+                    // Убираем параметр из URL
+                    const newUrl = window.location.href.split('?')[0];
+                    window.history.replaceState({}, document.title, newUrl);
+                    
+                    // Показываем уведомление
+                    showFriendNotification(`✅ Вы добавили ${decodedUsername} в друзья через ссылку!`);
                 }
-                friendCode = code;
             }
-            return friendCode;
         }
         
-        // Проверка валидности кода друга
-        function isValidFriendCode(code) {
-            return /^\d{6}$/.test(code); // Ровно 6 цифр
-        }
-        
-        // Проверка взаимной дружбы и подтверждение
-        function checkAndConfirmFriendship(code) {
-            // Ищем, есть ли у нас запрос на дружбу от этого человека
-            const existingFriend = friends.find(f => f.code === code && f.status === 'pending');
-            
-            if (existingFriend) {
-                // Подтверждаем дружбу
-                existingFriend.status = 'confirmed';
-                existingFriend.confirmedDate = new Date().toISOString();
-                
-                // Добавляем уведомление о подтверждении дружбы
-                pendingNotifications.push({
-                    type: 'friend_confirmed',
-                    code: code,
-                    message: `✅ Дружба с игроком ${code} подтверждена!`
-                });
-                
-                return true;
+        // Проверка валидности имени пользователя
+        function isValidUsername(name) {
+            if (!name || name.trim().length < 3 || name.trim().length > 20) {
+                return false;
             }
             
-            return false;
+            // Проверяем, что имя содержит только буквы, цифры и подчеркивания
+            const validRegex = /^[a-zA-Z0-9а-яА-Я_]+$/;
+            return validRegex.test(name.trim());
         }
         
         // Обновление списка друзей в UI
@@ -1435,18 +1499,11 @@
             friendsListEl.innerHTML = '';
             
             if (friends.length === 0) {
-                friendsListEl.innerHTML = '<div class="empty-friends">У вас пока нет друзей. Обменяйтесь кодами с другом!</div>';
+                friendsListEl.innerHTML = '<div class="empty-friends">У вас пока нет друзей. Добавьте друга по имени или отправьте ссылку!</div>';
             } else {
-                // Сортируем друзей: сначала подтвержденные, потом ожидающие
-                const sortedFriends = [...friends].sort((a, b) => {
-                    if (a.status === 'confirmed' && b.status !== 'confirmed') return -1;
-                    if (a.status !== 'confirmed' && b.status === 'confirmed') return 1;
-                    return new Date(b.date) - new Date(a.date);
-                });
-                
-                sortedFriends.forEach((friend, index) => {
+                friends.forEach((friend, index) => {
                     const friendItem = document.createElement('div');
-                    friendItem.className = `friend-item ${friend.status}`;
+                    friendItem.className = 'friend-item';
                     
                     const date = new Date(friend.date);
                     const formattedDate = date.toLocaleDateString('ru-RU', {
@@ -1455,25 +1512,13 @@
                         year: 'numeric'
                     });
                     
-                    let statusText = '';
-                    let statusClass = '';
-                    
-                    if (friend.status === 'confirmed') {
-                        statusText = '✅ Подтвержден';
-                        statusClass = 'confirmed';
-                    } else {
-                        statusText = '⏳ Ожидание подтверждения';
-                        statusClass = 'pending';
-                    }
-                    
                     friendItem.innerHTML = `
                         <div class="friend-info">
-                            <div class="friend-code">${friend.code}</div>
-                            <div class="friend-status ${statusClass}">${statusText}</div>
+                            <div class="friend-username">${friend.username}</div>
                             <div class="friend-date">Добавлен: ${formattedDate}</div>
                         </div>
                         <div class="friend-actions">
-                            <button class="friend-btn remove" data-code="${friend.code}">Удалить</button>
+                            <button class="friend-btn remove" data-username="${friend.username}">Удалить</button>
                         </div>
                     `;
                     
@@ -1483,57 +1528,55 @@
                 // Добавляем обработчики для кнопок удаления
                 document.querySelectorAll('.friend-btn.remove').forEach(btn => {
                     btn.addEventListener('click', function() {
-                        const code = this.getAttribute('data-code');
-                        removeFriend(code);
+                        const usernameToRemove = this.getAttribute('data-username');
+                        removeFriend(usernameToRemove);
                     });
                 });
             }
             
-            // Обновляем счетчики
-            const totalFriends = friends.length;
-            const confirmedFriends = friends.filter(f => f.status === 'confirmed').length;
-            
-            friendsCountEl.textContent = totalFriends;
-            confirmedFriendsCountEl.textContent = confirmedFriends;
+            friendsCountEl.textContent = friends.length;
             
             // Проверяем достижение "Социальный игрок"
-            if (confirmedFriends >= 5 && !achievements.socialPlayer) {
+            if (friends.length >= 5 && !achievements.socialPlayer) {
                 achievements.socialPlayer = true;
                 saveGame();
                 showFriendNotification('🎉 Достижение разблокировано: "Социальный игрок"!');
             }
         }
         
-        // Добавление друга по коду (первая сторона)
-        function addFriend(code) {
-            // Проверяем валидность кода
-            if (!isValidFriendCode(code)) {
-                showFriendNotification('❌ Неверный код! Код должен содержать 6 цифр.', 'error');
+        // Добавление друга по имени пользователя
+        function addFriend(friendUsername, fromLink = false) {
+            // Очищаем имя от лишних символов
+            friendUsername = friendUsername.trim();
+            
+            // Убираем @ в начале, если есть
+            if (friendUsername.startsWith('@')) {
+                friendUsername = friendUsername.substring(1);
+            }
+            
+            // Проверяем валидность имени
+            if (!isValidUsername(friendUsername)) {
+                showFriendNotification('❌ Неверное имя пользователя! Имя должно быть от 3 до 20 символов и содержать только буквы, цифры и подчеркивания.', 'error');
                 return false;
             }
             
             // Проверяем, не добавляем ли мы себя
-            if (code === friendCode) {
+            if (friendUsername.toLowerCase() === username.toLowerCase()) {
                 showFriendNotification('❌ Нельзя добавить себя в друзья!', 'error');
                 return false;
             }
             
             // Проверяем, нет ли уже такого друга
-            const existingFriend = friends.find(f => f.code === code);
-            if (existingFriend) {
-                if (existingFriend.status === 'confirmed') {
-                    showFriendNotification('❌ Этот друг уже подтвержден!', 'error');
-                } else {
-                    showFriendNotification('⏳ Ожидаем подтверждения от друга...', 'info');
+            if (friends.some(friend => friend.username.toLowerCase() === friendUsername.toLowerCase())) {
+                if (!fromLink) {
+                    showFriendNotification('❌ Этот друг уже добавлен!', 'error');
                 }
                 return false;
             }
             
-            // Проверяем, не отправляли ли мы уже запрос (имитация уведомления другу)
-            // В реальной системе здесь был бы запрос к серверу
+            // Добавляем друга
             const newFriend = {
-                code: code,
-                status: 'pending',
+                username: friendUsername,
                 date: new Date().toISOString()
             };
             
@@ -1541,30 +1584,54 @@
             updateFriendsList();
             saveGame();
             
-            // Показываем инструкцию для пользователя
-            showFriendNotification(`✅ Запрос на дружбу отправлен игроку ${code}! Попросите его добавить ваш код ${friendCode} для подтверждения.`, 'info');
-            
-            friendInput.value = ''; // Очищаем поле ввода
-            
-            // Имитируем проверку: если друг уже добавил нас, сразу подтверждаем
-            // В реальной системе это делал бы сервер
-            setTimeout(() => {
-                // Это имитация - в реальной системе друг должен добавить наш код
-                showFriendNotification(`💡 Не забудьте дать свой код ${friendCode} другу, чтобы он мог подтвердить дружбу!`, 'info');
-            }, 2000);
+            if (!fromLink) {
+                showFriendNotification(`✅ Друг @${friendUsername} успешно добавлен!`);
+                friendInput.value = ''; // Очищаем поле ввода
+            }
             
             return true;
         }
         
         // Удаление друга
-        function removeFriend(code) {
-            const index = friends.findIndex(f => f.code === code);
+        function removeFriend(friendUsername) {
+            const index = friends.findIndex(friend => friend.username === friendUsername);
             if (index !== -1) {
                 friends.splice(index, 1);
                 updateFriendsList();
                 saveGame();
-                showFriendNotification('✅ Друг удален!');
+                showFriendNotification(`✅ Друг @${friendUsername} удален!`);
             }
+        }
+        
+        // Установка имени пользователя
+        function setUsername(newUsername) {
+            newUsername = newUsername.trim();
+            
+            // Проверяем валидность имени
+            if (!isValidUsername(newUsername)) {
+                showFriendNotification('❌ Неверное имя пользователя! Имя должно быть от 3 до 20 символов и содержать только буквы, цифры и подчеркивания.', 'error');
+                return false;
+            }
+            
+            // Обновляем имя пользователя
+            username = newUsername;
+            userUsernameEl.textContent = `@${username}`;
+            
+            // Обновляем ссылку приглашения
+            updateInviteLink();
+            
+            saveGame();
+            showFriendNotification(`✅ Имя пользователя изменено на @${username}!`);
+            
+            usernameInput.value = ''; // Очищаем поле ввода
+            
+            return true;
+        }
+        
+        // Обновление ссылки приглашения
+        function updateInviteLink() {
+            const link = generateInviteLink();
+            inviteLinkEl.textContent = link;
         }
         
         // Показать уведомление для системы друзей
@@ -1585,19 +1652,6 @@
             }, 4000);
         }
         
-        // Проверка уведомлений (имитация получения уведомлений от друзей)
-        function checkFriendNotifications() {
-            if (pendingNotifications.length > 0) {
-                const notification = pendingNotifications.shift();
-                showFriendNotification(notification.message);
-                
-                // Обновляем список друзей если нужно
-                if (notification.type === 'friend_confirmed') {
-                    updateFriendsList();
-                }
-            }
-        }
-        
         // Инициализация игры
         function initGame() {
             loadGame();
@@ -1605,12 +1659,11 @@
             updateAchievementsList();
             updateShop();
             
-            // Генерируем код друга, если его еще нет
-            generateFriendCode();
-            friendCodeEl.textContent = friendCode;
+            // Устанавливаем начальное имя пользователя
+            userUsernameEl.textContent = `@${username}`;
             
-            // Проверяем уведомления при загрузке
-            setTimeout(checkFriendNotifications, 1000);
+            // Обновляем ссылку приглашения
+            updateInviteLink();
             
             // Обработчики событий - универсальные для ПК и мобильных
             setupClickHandlers();
@@ -1632,20 +1685,36 @@
             autoclickItem.addEventListener('click', buyAutoClick);
             
             // Обработчики для системы друзей
-            copyCodeBtn.addEventListener('click', copyFriendCode);
-            addFriendBtn.addEventListener('click', () => {
-                const code = friendInput.value.trim();
-                if (code) {
-                    addFriend(code);
+            setUsernameBtn.addEventListener('click', () => {
+                const newUsername = usernameInput.value.trim();
+                if (newUsername) {
+                    setUsername(newUsername);
                 }
             });
             
-            // Добавляем обработчик нажатия Enter в поле ввода кода
+            copyLinkBtn.addEventListener('click', copyInviteLink);
+            addFriendBtn.addEventListener('click', () => {
+                const friendUsername = friendInput.value.trim();
+                if (friendUsername) {
+                    addFriend(friendUsername);
+                }
+            });
+            
+            // Добавляем обработчик нажатия Enter в полях ввода
+            usernameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const newUsername = usernameInput.value.trim();
+                    if (newUsername) {
+                        setUsername(newUsername);
+                    }
+                }
+            });
+            
             friendInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
-                    const code = friendInput.value.trim();
-                    if (code) {
-                        addFriend(code);
+                    const friendUsername = friendInput.value.trim();
+                    if (friendUsername) {
+                        addFriend(friendUsername);
                     }
                 }
             });
@@ -1661,8 +1730,8 @@
                 startAutoClick();
             }
             
-            // Имитация периодической проверки уведомлений от друзей
-            setInterval(checkFriendNotifications, 10000); // Каждые 10 секунд
+            // Обрабатываем параметры URL для добавления друга по ссылке
+            processUrlParams();
         }
         
         // Настройка обработчиков кликов для ПК и мобильных
@@ -1844,9 +1913,6 @@
         function openFriendsModal() {
             friendsModal.style.display = 'flex';
             updateFriendsList();
-            
-            // Проверяем уведомления при открытии окна
-            setTimeout(checkFriendNotifications, 500);
         }
         
         // Закрытие модального окна друзей
@@ -1854,15 +1920,16 @@
             friendsModal.style.display = 'none';
         }
         
-        // Копирование кода друга в буфер обмена
-        function copyFriendCode() {
-            navigator.clipboard.writeText(friendCode)
+        // Копирование ссылки приглашения в буфер обмена
+        function copyInviteLink() {
+            const link = generateInviteLink();
+            navigator.clipboard.writeText(link)
                 .then(() => {
-                    showFriendNotification('✅ Код скопирован в буфер обмена!');
+                    showFriendNotification('✅ Ссылка скопирована в буфер обмена!');
                 })
                 .catch(err => {
-                    showFriendNotification('❌ Ошибка при копировании кода', 'error');
-                    console.error('Ошибка при копировании кода:', err);
+                    showFriendNotification('❌ Ошибка при копировании ссылки', 'error');
+                    console.error('Ошибка при копировании ссылки:', err);
                 });
         }
         
@@ -2101,12 +2168,7 @@
             totalCoinsEl.textContent = formatNumber(totalCoins);
             currentMultiplierEl.textContent = `x${multiplier}`;
             boostCountEl.textContent = boostPurchasedCount;
-            
-            // Обновляем счетчики друзей
-            const totalFriends = friends.length;
-            const confirmedFriends = friends.filter(f => f.status === 'confirmed').length;
-            friendsCountEl.textContent = totalFriends;
-            confirmedFriendsCountEl.textContent = confirmedFriends;
+            friendsCountEl.textContent = friends.length;
             
             if (stage === 1) {
                 nextMultiplierEl.textContent = `x${multiplier + 1}`;
@@ -2147,7 +2209,7 @@
                 { id: 'multiplier500', title: 'Множитель x500', description: 'Достигните множителя x500', condition: multiplier >= 500, unlocked: achievements.multiplier500 },
                 { id: 'boostMaster', title: 'Мастер бустов', description: 'Купите 5 бустов', condition: boostPurchasedCount >= 5, unlocked: achievements.boostMaster },
                 { id: 'richPlayer', title: 'Богатый игрок', description: 'Заработайте 1 миллион монет', condition: totalCoins >= 1000000, unlocked: achievements.richPlayer },
-                { id: 'socialPlayer', title: 'Социальный игрок', description: 'Подтвердите дружбу с 5 игроками', condition: friends.filter(f => f.status === 'confirmed').length >= 5, unlocked: achievements.socialPlayer }
+                { id: 'socialPlayer', title: 'Социальный игрок', description: 'Добавьте 5 друзей', condition: friends.length >= 5, unlocked: achievements.socialPlayer }
             ];
             
             achievementsListEl.innerHTML = '';
@@ -2182,9 +2244,8 @@
                 autoClickTimeLeft,
                 boostPurchasedCount,
                 currentBoostCost,
-                friendCode,
-                friends,
-                pendingNotifications
+                username,
+                friends
             };
             
             localStorage.setItem('coinClickerGame', JSON.stringify(gameData));
@@ -2229,9 +2290,8 @@
                     currentBoostCost = gameData.currentBoostCost || 1500;
                     
                     // Загружаем данные системы друзей
-                    friendCode = gameData.friendCode || '';
+                    username = gameData.username || 'Игрок';
                     friends = gameData.friends || [];
-                    pendingNotifications = gameData.pendingNotifications || [];
                     
                     // Обновляем отображение в зависимости от этапа
                     if (stage === 2) {
@@ -2288,9 +2348,8 @@
                 if (autoClickInterval) clearInterval(autoClickInterval);
                 
                 // Сбрасываем данные системы друзей
-                friendCode = '';
+                username = 'Игрок';
                 friends = [];
-                pendingNotifications = [];
                 
                 // Сбрасываем внешний вид
                 coinEl.style.display = 'block';
@@ -2302,16 +2361,17 @@
                 boostBtn.disabled = false;
                 boostBtn.classList.remove('active');
                 
-                // Генерируем новый код друга
-                generateFriendCode();
-                friendCodeEl.textContent = friendCode;
-                
-                // Очищаем сохранение
-                localStorage.removeItem('coinClickerGame');
-                
+                // Обновляем UI
                 updateUI();
                 updateShop();
                 updateFriendsList();
+                
+                // Обновляем имя пользователя в UI
+                userUsernameEl.textContent = `@${username}`;
+                updateInviteLink();
+                
+                // Очищаем сохранение
+                localStorage.removeItem('coinClickerGame');
             }
         }
         
